@@ -25,9 +25,15 @@ namespace MathsExample3.Pages
         public IndexModel(AppDbContext db)
         {
             _db = db;
+            // Fetch all questions from the database and store them in ExamQuestions.
             ExamQuestions = _db.Questions.FromSqlRaw("SELECT * FROM Questions").ToList();
 
         }
+
+        //This is the constructor for the IndexModel class.
+        //It initializes the AppDbContext field _db with the provided db parameter
+        //and fetches all questions from the database and stores them in the ExamQuestions list.
+        //It also initializes several other fields and properties for use throughout the class.
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -69,7 +75,9 @@ namespace MathsExample3.Pages
         /*this allows students to check for unused student IDs however increasing the Enumerable.range reduced performance of the website*/
         private async System.Threading.Tasks.Task GetAvailableStudentIDs()
         {
+            // Fetch all student IDs from the database.
             var allStudentIDs = await _db.Students.Select(s => s.StudentID).ToListAsync();
+            // Create a list of available student IDs by excluding all used student IDs.
             AvailableStudentIDs = Enumerable.Range(1, 1000).Except(allStudentIDs).Select(i => i.ToString()).ToList();
         }
     }
